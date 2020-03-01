@@ -30,7 +30,7 @@ trait Billable
      * @param  array  $options
      * @return \Laravel\Cashier\Payment
      */
-    public function charge($amount, $paymentMethod, array $options = [])
+    public function charge($amount, $paymentMethod = null, array $options = [])
     {
         $options = array_merge([
             'confirmation_method' => 'automatic',
@@ -39,7 +39,9 @@ trait Billable
         ], $options);
 
         $options['amount'] = $amount;
-        $options['payment_method'] = $paymentMethod;
+        if ($paymentMethod) {
+            $options['payment_method'] = $paymentMethod;
+        }
 
         if ($this->stripe_id) {
             $options['customer'] = $this->stripe_id;
